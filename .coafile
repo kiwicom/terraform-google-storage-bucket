@@ -1,0 +1,44 @@
+[all]
+files = **/*.tf, **/**/*.tf
+
+indent_size = 2
+use_spaces = True
+max_line_length = 120
+max_lines_per_file = 5000
+file_naming_convention = snake
+
+space_between_ending_comma_and_closing_bracket = yes
+dedent_closing_brackets = yes
+blank_line_before_nested_class_or_def = yes
+
+[all.long-files]
+bears = LineCountBear
+
+[all.spacing]
+bears = SpaceConsistencyBear
+
+[all.yaml]
+language = yaml
+files = **/**.yml, **/**.yaml
+
+[all.yaml.spacing]
+bears = SpaceConsistencyBear
+indent_size = 2
+
+[all.python]
+language = python
+files = **/*.py
+ignore = **/dependencies/**.py, **/lib/**.py, **/bin/**.py, **/include/**.py, **/local/**.py, **/share/**.py
+
+[all.python.spacing]
+bears = SpaceConsistencyBear
+indent_size = 4
+
+[safety]
+bears = PySafetyBear
+files = **/requirements.txt
+
+[commit]
+bears = GitCommitBear
+shortlog_length = 72
+ignore_length_regex = https?://
