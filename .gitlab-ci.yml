@@ -1,0 +1,40 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: brandography/alpine-zip
+  script:
+    - zip ${CI_PROJECT_NAME}.zip *.tf
+  artifacts:
+    paths:
+      - ${CI_PROJECT_NAME}.zip
+    expire_in: 1 month
+
+static-analysis:
+  stage: build
+  image: coala/base:0.11
+  script:
+    - coala --non-interactive
+
+.deploy: &deploy
+  stage: deploy
+  image: kiwicom/s3cmd
+  script:
+    - s3cmd put --acl-public ${CI_PROJECT_NAME}.zip s3://terraform-modules.skypicker.com/${CI_PROJECT_NAME}/${MODULE_PATH}
+    - echo "Module deployed to https://terraform-modules.skypicker.com/${CI_PROJECT_NAME}/${MODULE_PATH}"
+
+deploy commit:
+  <<: *deploy
+  variables:
+    MODULE_PATH: dev/${CI_PROJECT_NAME}-${CI_COMMIT_SHA}.zip
+  except:
+    - tags
+
+deploy tag:
+  <<: *deploy
+  variables:
+    MODULE_PATH: ${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.zip
+  only:
+    - tags
