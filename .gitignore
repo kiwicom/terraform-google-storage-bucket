@@ -3,6 +3,7 @@
 .envrc
 .env-*
 .idea/
+terraform.tfstate
 terraform.tfstate.backup
 *.pyc
 *.pem

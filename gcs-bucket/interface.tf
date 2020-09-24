@@ -22,9 +22,14 @@ variable "labels" {
 }
 
 # how do I inherit this from project?
-variable "GOOGLE_REGION" {
+variable "region" {
   type = string
   default = "eu-west-1"
+}
+
+variable "project" {
+  type = string
+  #default = ""
 }
 
 #variable "role" {

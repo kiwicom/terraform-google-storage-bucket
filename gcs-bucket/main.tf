@@ -1,7 +1,8 @@
 resource "google_storage_bucket" "bucket" {
   name                        = local.final_bucket_name
   labels                      = var.labels
-  location                    = var.GOOGLE_REGION
+  location                    = var.region
+  project                     = var.project
   storage_class               = var.storage_class
   uniform_bucket_level_access = true
 
@@ -33,25 +34,23 @@ resource "google_storage_bucket_iam_member" "admins" {
 }
 
 resource "google_storage_bucket_iam_member" "objectCreator" {
-  for_each  = toset(var.members_object_creator)
-  bucket    = google_storage_bucket.bucket.name
-  role      = "roles/storage.objectCreator"
-  member    = each.value
-  depends_on = [
+  for_each    = toset(var.members_object_creator)
+  bucket      = google_storage_bucket.bucket.name
+  role        = "roles/storage.objectCreator"
+  member      = each.value
+  depends_on  = [
     google_storage_bucket.bucket,
   ]
 }
 #### alternative
-resource "google_storage_bucket_iam_binding" "binding" {
-  bucket = google_storage_bucket.bucket.name
-  role = "roles/storage.admin"
-  members = var.members_object_creator
-  depends_on = [
-    google_storage_bucket.bucket,
-  ]
-}
-
-
+#resource "google_storage_bucket_iam_binding" "binding" {
+#  bucket = google_storage_bucket.bucket.name
+#  role = "roles/storage.admin"
+#  members = var.members_object_creator
+#  depends_on = [
+#    google_storage_bucket.bucket,
+#  ]
+#}
 
 #--------------
 resource "random_id" "id" {
