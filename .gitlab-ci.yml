@@ -12,11 +12,11 @@ build:
       - ${CI_PROJECT_NAME}.zip
     expire_in: 1 month
 
-#static-analysis:
-#  stage: build
-#  image: coala/base:0.11
-#  script:
-#    - coala --non-interactive
+static-analysis:
+  stage: build
+  image: coala/base:0.11
+  script:
+    - coala --non-interactive
 
 .deploy: &deploy
   stage: deploy
