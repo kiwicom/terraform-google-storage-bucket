@@ -2,7 +2,7 @@ variable "bucket_name" {
   type = string
   description = "Name of GCS bucket. Must be unique company wide"
 
-   validation {
+  validation {
     condition     = length(var.bucket_name) > 4 && substr(var.bucket_name, 0, 4) == "ami-"
     error_message = "The image_id value must be a valid AMI id, starting with \"ami-\"."
   }
@@ -26,7 +26,7 @@ variable "role" {
   type = string
   default = "roles/storage.objectViewer"
 
-    validation {
+  validation {
       condition     = var.role == "roles/storage.objectCreator" || var.role == "roles/storage.objectViewer" || var.role == "roles/storage.objectAdmin" || var.role == "roles/storage.admin"
       error_message = "The role value must be one of the following: roles/storage.objectCreator,roles/storage.objectViewer,roles/storage.objectAdmin,roles/storage.admin ."
   }
@@ -36,6 +36,16 @@ variable "role_members" {
   type = list(string)
   default = [
     "user:petar.sekul@kiwi.com",
-    "serviceaccount"
+    "service.account:smg@kiwilkdaskl.com"
   ]
+}
+
+variable "storage_class" {
+  type = string
+  default = "STANDARD"
+  # no point in this as invalid class will be ponited out in plan ?
+  #validation {
+  #    condition     = var.storage_class == "STANDARD" || var.storage_class == "NEARLINE" || var.storage_class == "COLDLINE" || var.storage_class == "ARCHIVE"
+  #    error_message = "The role value must be one of the following: STANDARD,NEARLINE,COLDLINE,ARCHIVE."
+  #}
 }
