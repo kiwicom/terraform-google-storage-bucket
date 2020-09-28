@@ -28,7 +28,8 @@ build:
 deploy commit:
   <<: *deploy
   variables:
-    MODULE_PATH: dev/${CI_PROJECT_NAME}-${CI_COMMIT_SHA}.zip
+    #MODULE_PATH: dev/${CI_PROJECT_NAME}-${CI_COMMIT_SHA}.zip
+    MODULE_PATH: dev/${CI_PROJECT_NAME}.zip
   except:
     - tags
 
