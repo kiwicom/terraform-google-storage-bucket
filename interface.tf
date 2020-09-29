@@ -1,5 +1,5 @@
 variable "bucket_name" {
-  type = string
+  type        = string
   description = "Name of GCS bucket. Must be unique company wide"
 
   validation {
@@ -11,68 +11,70 @@ variable "bucket_name" {
 variable "labels" {
   type = map(string)
   default = {
-    "team"  = ""
-    "type"   = ""
+    "team" = ""
+    "type" = ""
   }
 
   validation {
     condition     = length(var.labels.team) > 0
     error_message = "Tag team is mandatory."
   }
+
+  validation {
+    condition     = var.labels.type == "sandbox" || var.labels.type == "public" || var.labels.type == "production"
+    error_message = "Tag type can be: sandbox,production,public."
+  }
 }
 
-# how do I inherit this from project?
-variable "region" {
+variable "location" {
   type = string
-  default = "eu-west-1"
 }
-
-variable "project" {
-  type = string
-  #default = ""
-}
-
-#variable "role" {
-#  type = string
-#  default = "roles/storage.objectViewer"
-#
-#  validation {
-#      condition     = var.role == "roles/storage.objectCreator" || var.role == "roles/storage.objectViewer" || var.role == "roles/storage.objectAdmin" || var.role == "roles/storage.admin"
-#      error_message = "The role value must be one of the following: roles/storage.objectCreator,roles/storage.objectViewer,roles/storage.objectAdmin,roles/storage.admin ."
-#  }
-#}
-
-#variable "role_members" {
-#  type = map(string)
-#  default = {
-#    "objectAdmin" = "user:petar.sekul@kiwi.com",
-#    "objectViewer"= "service.account:smg@kiwilkdaskl.com"
-#  }
-#}
 
 variable "members_storage_admin" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "List of members that will receive roles/storage.admin to bucket"
 }
 
 variable "members_object_creator" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "List of members that will receive roles/storage.objectCreator to bucket"
 }
 
+variable "members_object_viewer" {
+  type        = list(string)
+  default     = []
+  description = "List of members that will receive roles/storage.objectViewer to bucket"
+}
+
+variable "members_object_admin" {
+  type        = list(string)
+  default     = []
+  description = "List of members that will receive roles/storage.objectAdmin to bucket"
+}
+
 variable "storage_class" {
-  type = string
+  type    = string
   default = "STANDARD"
-  # no point in this as invalid class will be ponited out in plan ?
-  #validation {
-  #    condition     = var.storage_class == "STANDARD" || var.storage_class == "NEARLINE" || var.storage_class == "COLDLINE" || var.storage_class == "ARCHIVE"
-  #    error_message = "The role value must be one of the following: STANDARD,NEARLINE,COLDLINE,ARCHIVE."
-  #}
+  # no point in this as invalid class will be ponited out in plan ? It will not, PLAN wil pass but apply will fail
+  validation {
+    condition     = var.storage_class == "STANDARD" || var.storage_class == "NEARLINE" || var.storage_class == "COLDLINE" || var.storage_class == "ARCHIVE" || var.storage_class == "MULTI_REGIONAL" || var.storage_class == "REGIONAL"
+    error_message = "The role value must be one of the following: STANDARD,NEARLINE,COLDLINE,ARCHIVE,MULTI_REGIONAL,REGIONAL."
+  }
 }
 
 variable "randomise" {
-  type = bool
+  type        = bool
+  default     = false
   description = "Do you need a random suffix added to bucket name"
+}
+
+variable "lc_del_rule" {
+  type = map(string)
+
+  default = {
+    delete = "no"
+    value  = ""
+  }
 }
