@@ -5,30 +5,34 @@ resource "google_storage_bucket" "bucket" {
   storage_class               = var.storage_class
   uniform_bucket_level_access = true
 
-  lifecycle {
-    prevent_destroy = true
-  }
+  #lifecycle {
+  #  prevent_destroy = true
+  #}
 
   dynamic "lifecycle_rule" {
-    for_each = var.lc_del_rule.delete == "yes" ? [1] : []
+    for_each = var.expiration_rule.delete == "yes" ? [1] : []
     content {
       action {
         type = "Delete"
       }
       condition {
-        age = var.lc_del_rule.value
+        age = var.expiration_rule.days
       }
     }
   }
 
-  #  lifecycle_rule {
-  #    action {
-  #      type = "Delete"
-  #    }
-  #    condition {
-  #      age = 425
-  #    }
-  #  }
+  dynamic "lifecycle_rule" {
+    for_each = [for item in var.conversion_rule : item]
+    content {
+      action {
+        type = "SetStorageClass"
+        storage_class = lookup(lifecycle_rule.value, "storage_class", null)
+      }
+      condition {
+        age = lookup(lifecycle_rule.value, "days", null)
+      }
+    }
+  }
 
 }
 
