@@ -10,7 +10,7 @@ resource "google_storage_bucket" "bucket" {
   #}
 
   dynamic "lifecycle_rule" {
-    for_each = var.expiration_rule.delete == "yes" ? [1] : []
+    for_each = var.expiration_rule.delete == true ? [1] : []
     content {
       action {
         type = "Delete"
@@ -38,7 +38,7 @@ resource "google_storage_bucket" "bucket" {
 
 # insert suffix in bucket name based if label.type sandbox or public .
 locals {
-  final_bucket_name = "${var.bucket_name}${var.labels.type == "sandbox" ? "-sandbox" : ""}${var.labels.type == "public" ? "-public" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
+  final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.labels.public == true ? "-public" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
 }
 
 resource "google_storage_bucket_iam_binding" "storage_admin" {
@@ -88,7 +88,7 @@ resource "google_storage_bucket_iam_member" "public_view" {
   depends_on = [
     google_storage_bucket.bucket,
   ]
-  count = var.labels.type == "public" ? 1 : 0
+  count = var.labels.public == "yes" ? 1 : 0
 }
 
 resource "random_id" "id" {
