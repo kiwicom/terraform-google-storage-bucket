@@ -3,11 +3,10 @@ variable "bucket_name" {
   description = "Name of GCS bucket."
 
   validation {
-    condition     = length(var.bucket_name) > 3 || length(var.bucket_name) < 39
-    error_message = "The bucket_name length must be > 3 and < 39."
+    condition     = length(var.bucket_name) > 3 && length(var.bucket_name) < 39 && can(regex("^[a-zA-Z0-9.\\-_]{1,255}$", var.bucket_name))
+    error_message = "The bucket_name length must be > 3 and < 39, and pass bucket naming rules."
   }
 }
-
 
 variable "owner_info" {
   type = map(string)
@@ -15,49 +14,27 @@ variable "owner_info" {
     "responsible_people" = ""
     "communication_slack_channel" = ""
   }
+
   validation {
-    condition     = length(var.owner_info.communication_slack_channel) > 0
+    #condition     = length(var.owner_info.communication_slack_channel) > 0
+    condition     = var.owner_info.communication_slack_channel == "test"
     error_message = "Please fill in communication_slack_channel it's mandatory."
-  }
-  validation {
-    condition     = length(var.owner_info.responsible_people) > 0
-    error_message = "Please fill in responsible_people it's mandatory."
   }
 }
 
 variable "labels" {
-  #type = object({
-  #  public = bool
-  #  env = string
-  #  tribe = string
-  #  communication_slack_channel = string
-  #})
-#
-  #default = {
-  #  public = false
-  #  env = ""
-  #  tribe = ""
-  #  communication_slack_channel = ""
-  #}
-
   type = map(string)
   default = {
     "public" = "no"
     "tribe" = ""
     "env" = ""
-    #"responsible_people" = ""
-    #"communication_slack_channel" = ""
-  }
-  validation {
-    condition     = length(var.labels.tribe) > 0
-    error_message = "Label tribe is mandatory."
   }
   validation {
     condition     = var.labels.env == "sandbox" || var.labels.env == "production"
     error_message = "Label env is mandatory and can be: sandbox or production."
   }
   validation {
-    condition     = var.labels.public == "yes" || var.labels.env == "no"
+    condition     = var.labels.public == "yes" || var.labels.public == "no"
     error_message = "Label public is mandatory and can be: yes or no."
   }
   validation {
@@ -114,7 +91,6 @@ variable "expiration_rule" {
     days    = number
   }
   )
-
   default = {
     delete = true
     days  = 0

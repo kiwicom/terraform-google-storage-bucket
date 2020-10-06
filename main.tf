@@ -5,9 +5,9 @@ resource "google_storage_bucket" "bucket" {
   storage_class               = var.storage_class
   uniform_bucket_level_access = true
 
-  #lifecycle {
-  #  prevent_destroy = true
-  #}
+  lifecycle {
+    prevent_destroy = true
+  }
 
   dynamic "lifecycle_rule" {
     for_each = var.expiration_rule.delete == true ? [1] : []
@@ -39,6 +39,7 @@ resource "google_storage_bucket" "bucket" {
 # insert suffix in bucket name based if label.type sandbox or public .
 locals {
   final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.labels.public == true ? "-public" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
+  test = var.owner_info.communication_slack_channel
 }
 
 resource "google_storage_bucket_iam_binding" "storage_admin" {
