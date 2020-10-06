@@ -43,14 +43,16 @@ module "test_bucket" {
     * Set the [storage class](https://cloud.google.com/storage/docs/storage-classes) of your bucket
     * If not set, default is: STANDARD
     * Available options are STANDARD,NEARLINE,COLDLINE,ARCHIVE,MULTI_REGIONAL,REGIONAL
-    
+
+
 * `labels` map(string)
     * Labels `public` , `tribe` and `env` are mandatory. Naming of bucket and creation of IAM rules are dependant on these.
-    * Label `public` determines if bucket content should be publicly available. If set to `"yes"` a suffix `-public` will be added to bucket name, IAM rule enabling public access to objects in the bucket will be created. Public listing of bucket content will not be possible. Default is `"no"`
+    * Label `public` determines if bucket content should be publicly available. If set to `"yes"` a suffix `-public` will be added to bucket name. IAM rule granting `AllUsers` the role `roles/storage.legacyObjectReader`, enabling public access to objects in the bucket but preventing public listing of bucket content. Default is `"no"`
     * Label `env` can be set to `sandbox` or `production`. I set to `sandbox` suffix will be added to name.
     * Label `tribe` ca be set to (`anciliaries`|`autobooking`|`bass`|`bi`|`booking`|`cs-systems`|`data-acquisition`|`finance`|`platform`|`search`)
     * You may add additional labels in form `arbitrary = "label"` but you must follow these [rules](https://cloud.google.com/storage/docs/key-terms#bucket-labels) or the bucket creation will fail on Terraform apply!
-    
+
+
 * `owner_info` map(string)
     * This info is needed so Infra staff can find Point Of Contact for the bucket.
     * Value `responsible_people` please fill with with email of slack handle. Not optional, but can be empty string if there is no direct responsible person.
@@ -86,14 +88,65 @@ module "test_bucket" {
   conversion_rule = [
     {
       storage_class = "NEARLINE"
-      days = 90
+      days          = 90
     },
     {
       storage_class = "ARCHIVE"
-      days = 365
+      days          = 365
     }
   ]
 ```
 
 * `randomise` bool
     * If there is a valid use case to omit the random suffix added to `bucket_name` set this to `true`
+
+## Complex Example
+
+```hcl-terraform
+module "test_bucket2" {
+  source = "http://terraform-modules.skypicker.com.s3.amazonaws.com/gcp-bucket/dev/gcp-bucket.zip"
+
+  bucket_name   = "test-bucket2"     
+  location      = "europe-west1"
+  storage_class = "REGIONAL"
+  randomise     = false
+
+  owner_info = {
+    responsible_people          = "some.user@kiwi.com, @some.user"
+    communication_slack_channel = "#plz-platform-infra"
+  }
+
+  labels = {
+    tribe     = "platform" 
+    env       = "sandbox" 
+    public    = "no"      
+    arbitrary = "label"
+  }
+
+  members_object_viewer = [
+    "user:random.user@kiwi.com",
+    "user:another.one@kiwi.com",
+  ]
+  members_object_creator = [
+    "service.account:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com ",
+  ]
+
+  expiration_rule = {
+    delete  = true
+    days    = 730
+  }
+
+  conversion_rule = [
+    {
+      storage_class = "NEARLINE"
+      days          = 90
+    },
+    {
+      storage_class = "ARCHIVE"
+      days          = 365
+    }
+  ]
+
+
+}
+```
