@@ -57,18 +57,19 @@ module "test_bucket" {
     * This info is needed so Infra staff can find Point Of Contact for the bucket.
     * Value `responsible_people` please fill with with email of slack handle. Not optional, but can be empty string if there is no direct responsible person.
     * Value `communication_slack_channel` Name of primary slack channel for communication Examples: #platform-infra
-    
+<br />   
 * `expiration_rule` object(bool, number)
     * This defines a object [lifecycle](https://cloud.google.com/storage/docs/lifecycle) action with `Delete` action set to value of `days`
     * Is is strongly encouraged to define a expiration_rule for your bucket, please consider usage cases for data in your bucket and set accordingly.
     * If your usage case requires it, it's possible to not set a expiration_rule by setting `delete = false`
-
+<br />
 * `members_object_viewer` `members_object_creator` `members_object_admin` `members_storage_admin` list(string)
     * Through these you control access to bucket.
     * These set the [IAM binding](https://www.terraform.io/docs/providers/google/r/storage_bucket_iam.html#google_storage_bucket_iam_binding) to the bucket for the [predefined IAM role](https://cloud.google.com/storage/docs/access-control/iam-roles) for GCS.
     * GCP applications should use [service accounts](https://kiwi.wiki/handbook/tooling/gcp/service-accounts/) to access GCS buckets.
     * **_NOTE:_** Always assign the least permissive role that satisfies the requirements.
-
+  
+  
 ```hcl-terraform
   members_object_viewer = [
     "user:random.user@kiwi.com",
@@ -78,12 +79,13 @@ module "test_bucket" {
     "service.account:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com ",
   ]
 ```
-
+<br />
 * `conversion_rule` list(map(string))
     * Use these to change the [storage class](https://cloud.google.com/storage/docs/storage-classes) of an object when the object meets conditions specified in the lifecycle rule.
     * This defines a object [lifecycle](https://cloud.google.com/storage/docs/lifecycle) action with `SetStorageClass` with `Age` set to value of `days`
     * Generally we use these downgrade storage class of objects in order to reduce costs.
-    
+  
+  
 ```hcl-terraform
   conversion_rule = [
     {
@@ -96,7 +98,7 @@ module "test_bucket" {
     }
   ]
 ```
-
+<br />
 * `randomise` bool
     * If there is a valid use case to omit the random suffix added to `bucket_name` set this to `true`
 
@@ -146,7 +148,6 @@ module "test_bucket2" {
       days          = 365
     }
   ]
-
 
 }
 ```
