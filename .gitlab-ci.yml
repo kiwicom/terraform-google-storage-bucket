@@ -28,7 +28,7 @@ build:
 deploy master:
   <<: *deploy
   variables:
-    MODULE_PATH: dev/${CI_PROJECT_NAME}-latest.zip
+    MODULE_PATH: ${CI_PROJECT_NAME}-latest.zip
   only:
     - master
 
