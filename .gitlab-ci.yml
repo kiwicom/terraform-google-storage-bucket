@@ -25,11 +25,17 @@ build:
     - s3cmd put --acl-public ${CI_PROJECT_NAME}.zip s3://terraform-modules.skypicker.com/${CI_PROJECT_NAME}/${MODULE_PATH}
     - echo "Module deployed to https://terraform-modules.skypicker.com/${CI_PROJECT_NAME}/${MODULE_PATH}"
 
+deploy master:
+  <<: *deploy
+  variables:
+    MODULE_PATH: dev/${CI_PROJECT_NAME}-latest.zip
+  only:
+    - master
+
 deploy commit:
   <<: *deploy
   variables:
     MODULE_PATH: dev/${CI_PROJECT_NAME}-${CI_COMMIT_SHA}.zip
-    #MODULE_PATH: dev/${CI_PROJECT_NAME}.zip
   except:
     - tags
 
