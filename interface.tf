@@ -3,8 +3,9 @@ variable "bucket_name" {
   description = "Name of GCS bucket."
 
   validation {
-    condition     = length(var.bucket_name) > 3 && length(var.bucket_name) < 39 && can(regex("^[a-zA-Z0-9.\\-_]{1,255}$", var.bucket_name))
-    error_message = "The bucket_name length must be > 3 and < 39, and pass bucket naming rules."
+    # TODO: Add back length limit, e.g. `length(var.bucket_name) < 39`
+    condition     = length(var.bucket_name) > 3 && can(regex("^[a-zA-Z0-9.\\-_]{1,255}$", var.bucket_name))
+    error_message = "The bucket_name length must be > 3, and pass bucket naming rules."
   }
 }
 
