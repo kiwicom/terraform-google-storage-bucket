@@ -16,8 +16,7 @@ variable "owner_info" {
   }
 
   validation {
-    #condition     = length(var.owner_info.communication_slack_channel) > 0
-    condition     = var.owner_info.communication_slack_channel == "test"
+    condition     = length(var.owner_info.communication_slack_channel) > 0
     error_message = "Please fill in communication_slack_channel it's mandatory."
   }
 }
