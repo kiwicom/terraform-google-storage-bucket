@@ -79,7 +79,7 @@ module "test_bucket" {
     "user:another.one@kiwi.com",
   ]
   members_object_creator = [
-    "service.account:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com ",
+    "serviceAccount:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com ",
   ]
 ```
 <br />
@@ -135,7 +135,7 @@ module "test_bucket2" {
     "user:another.one@kiwi.com",
   ]
   members_object_creator = [
-    "service.account:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com ",
+    "serviceAccount:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com ",
   ]
 
   expiration_rule = {
