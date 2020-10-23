@@ -5,6 +5,14 @@ resource "google_storage_bucket" "bucket" {
   storage_class               = var.storage_class
   uniform_bucket_level_access = true
 
+  dynamic "website" {
+    for_each = var.website[*]
+    content {
+      main_page_suffix = website.value.main_page_suffix
+      not_found_page   = website.value.not_found_page
+    }
+  }
+
   lifecycle {
     prevent_destroy = true
   }
