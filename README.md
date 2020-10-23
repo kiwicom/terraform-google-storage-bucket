@@ -5,8 +5,7 @@
 Here is a example of what is needed to create a bucket 
 ```hcl-terraform
 module "test_bucket" {
-  source = "http://terraform-modules.skypicker.com.s3.amazonaws.com/gcp-bucket/gcp-bucket-v1.0.zip"
-
+  source = "http://terraform-modules.skypicker.com.s3.amazonaws.com/gcp-bucket/gcp-bucket-latest.zip"
   bucket_name   = "test-bucket"     #base name, random suffix will be added and depending on labels other suffixes
   location      = var.GOOGLE_REGION #this will set location of bucket to project location
 
@@ -111,7 +110,7 @@ module "test_bucket" {
 
 ```hcl-terraform
 module "test_bucket2" {
-  source = "http://terraform-modules.skypicker.com.s3.amazonaws.com/gcp-bucket/gcp-bucket-v1.0.zip"
+  source = "http://terraform-modules.skypicker.com.s3.amazonaws.com/gcp-bucket/gcp-bucket-latest.zip"
 
   bucket_name   = "test-bucket2"     
   location      = "europe-west1"
