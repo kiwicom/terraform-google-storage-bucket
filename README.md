@@ -29,6 +29,7 @@ module "test_bucket" {
 
 }
 ```
+
 ## Editable variables
 
 * `bucket_name` (string)
@@ -107,6 +108,8 @@ module "test_bucket" {
 
 * `randomise` bool
     * If there is a valid use case to omit the random suffix added to `bucket_name` set this to `true`
+    
+* `website` object, see the documentation for [google_storage_bucket](https://www.terraform.io/docs/providers/google/r/storage_bucket.html#website)
 
 ## Complex Example
 
@@ -155,7 +158,11 @@ module "test_bucket2" {
       days          = 365
     }
   ]
-
+  
+  website = {
+    main_page_suffix = "index.html"
+    not_found_page = null
+  }
 }
 ```
 ## Release notes
