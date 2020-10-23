@@ -5,7 +5,7 @@
 Here is a example of what is needed to create a bucket 
 ```hcl-terraform
 module "test_bucket" {
-  source = "kiwicom/terraform-google-storage-bucket"
+  source = "kiwicom/storage-bucket/google"
   version = "~> 1.0.0" # version >= 1.0.0 and < 1.1.0, e.g. 1.0.X
 
   bucket_name   = "test-bucket"     #base name, random suffix will be added and depending on labels other suffixes
@@ -115,7 +115,7 @@ module "test_bucket" {
 
 ```hcl-terraform
 module "test_bucket2" {
-  source = "kiwicom/terraform-google-storage-bucket"
+  source = "kiwicom/storage-bucket/google"
   version = "~> 1.0.0" # version >= 1.0.0 and < 1.1.0, e.g. 1.0.X
 
   bucket_name   = "test-bucket2"     
