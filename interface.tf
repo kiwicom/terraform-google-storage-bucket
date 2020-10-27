@@ -105,3 +105,11 @@ variable "conversion_rule" {
   type = list(map(string))
   default =[]
 }
+
+variable "website" {
+  type = object({
+    main_page_suffix = string
+    not_found_page = string
+  })
+  default = null
+}
