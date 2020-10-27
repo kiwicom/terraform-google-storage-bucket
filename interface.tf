@@ -96,7 +96,7 @@ variable "expiration_rule" {
     days  = 0
   }
   validation {
-    condition = var.expiration_rule.days > 0
+    condition = var.expiration_rule.delete == false || var.expiration_rule.days > 0
     error_message = "Set days > 0, or if you have a valid usage case, set delete to: false ."
   }
 }
