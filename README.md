@@ -111,6 +111,9 @@ module "test_bucket" {
     
 * `website` object, see the documentation for [google_storage_bucket](https://www.terraform.io/docs/providers/google/r/storage_bucket.html#website)
 
+* `versioning_enable` bool
+    * Default if `false`, set to `true` if you want enable [object versioning](https://cloud.google.com/storage/docs/object-versioning) 
+
 ## Complex Example
 
 ```hcl-terraform
@@ -118,10 +121,11 @@ module "test_bucket2" {
   source = "kiwicom/storage-bucket/google"
   version = "~> 1.0.0" # version >= 1.0.0 and < 1.1.0, e.g. 1.0.X
 
-  bucket_name   = "test-bucket2"     
-  location      = "europe-west1"
-  storage_class = "REGIONAL"
-  randomise     = false
+  bucket_name       = "test-bucket2"     
+  location          = "europe-west1"
+  storage_class     = "REGIONAL"
+  randomise         = false
+  versioning_enable = true
 
   owner_info = {
     responsible_people          = "some.user@kiwi.com, @some.user"
@@ -163,9 +167,13 @@ module "test_bucket2" {
     main_page_suffix = "index.html"
     not_found_page = null
   }
+
 }
 ```
 ## Release notes
 
-### 1.0
+### 1.0.0
 Initial release
+
+### 1.0.4
+Add support for versioning
