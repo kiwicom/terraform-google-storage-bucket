@@ -113,3 +113,8 @@ variable "website" {
   })
   default = null
 }
+
+variable "versioning_enable" {
+  type = bool
+  default = false
+}

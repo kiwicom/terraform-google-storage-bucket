@@ -42,6 +42,13 @@ resource "google_storage_bucket" "bucket" {
     }
   }
 
+  dynamic "versioning" {
+    for_each = var.versioning_enable == true ? [1] : []
+    content {
+      enabled = true
+    }
+  }
+
 }
 
 # insert suffix in bucket name based if label.type sandbox or public .
