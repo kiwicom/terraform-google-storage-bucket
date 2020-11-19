@@ -38,8 +38,8 @@ variable "labels" {
     error_message = "Label public is mandatory and can be: yes or no."
   }
   validation {
-    condition     = var.labels.tribe == "anciliaries" || var.labels.tribe == "autobooking" || var.labels.tribe == "bass" || var.labels.tribe == "bi" || var.labels.tribe == "booking" || var.labels.tribe == "cs-systems" || var.labels.tribe == "data-acquisition" || var.labels.tribe == "finance" || var.labels.tribe == "platform" || var.labels.tribe == "reservations" || var.labels.tribe == "search"
-    error_message = "Label tribe is mandatory and can be (anciliaries|autobooking|bass|bi|booking|cs-systems|data-acquisition|finance|platform|reservations|search)."
+    condition     = var.labels.tribe == "anciliaries" || var.labels.tribe == "autobooking" || var.labels.tribe == "bass" || var.labels.tribe == "bi" || var.labels.tribe == "booking" || var.labels.tribe == "cs-systems" || var.labels.tribe == "data-acquisition" || var.labels.tribe == "finance" || var.labels.tribe == "platform" || var.labels.tribe == "php" || var.labels.tribe == "reservations" || var.labels.tribe == "search"
+    error_message = "Label tribe is mandatory and can be (anciliaries|autobooking|bass|bi|booking|cs-systems|data-acquisition|finance|platform|php|reservations|search)."
   }
 }
 
