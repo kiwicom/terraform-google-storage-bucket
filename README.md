@@ -50,17 +50,17 @@ module "test_bucket" {
 <br /> 
 
 * `labels` map(string)
-    * Labels `public` , `tribe` and `env` are mandatory. Naming of bucket and creation of IAM rules are dependant on these.
+    * Labels `public` , `tribe` and `env` are mandatory. Naming of bucket and creation of IAM rules are dependent on these.
     * Label `public` determines if bucket content should be publicly available. If set to `"yes"` a suffix `-public` will be added to bucket name. IAM rule granting `AllUsers` the role `roles/storage.legacyObjectReader`, enabling public access to objects in the bucket but preventing public listing of bucket content. Default is `"no"`
     * Label `env` can be set to `sandbox` or `production`. If set to `sandbox` suffix will be added to name.
-    * Label `tribe` can be set to (`anciliaries`|`autobooking`|`bass`|`bi`|`booking`|`cs-systems`|`data-acquisition`|`finance`|`platform`|`reservations`|`search`)
+    * Label `tribe` can be set to (`ancillaries`|`autobooking`|`bass`|`bi`|`booking`|`cs-systems`|`data-acquisition`|`finance`|`php`|`platform`|`reservations`|`search`)
     * You may add additional labels in form `arbitrary = "label"` but you must follow these [rules](https://cloud.google.com/storage/docs/key-terms#bucket-labels) or the bucket creation will fail on Terraform apply!
 <br /> 
 
 * `owner_info` map(string)
     * This info is needed so Infra staff can find Point Of Contact for the bucket.
-    * Value `responsible_people` please fill with with email of slack handle. Not optional, but can be empty string if there is no direct responsible person.
-    * Value `communication_slack_channel` Name of primary slack channel for communication Examples: #platform-infra
+    * Value `responsible_people` please fill with email of slack handle. Not optional, but can be empty string if there is no direct responsible person.
+    * Value `communication_slack_channel` Name of primary Slack channel for communication Examples: #platform-infra
 <br /> 
   
 * `expiration_rule` object(bool, number)
