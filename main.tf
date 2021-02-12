@@ -1,6 +1,18 @@
+# insert suffix in bucket name based if label.type sandbox or public .
+locals {
+  final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.labels.public == true ? "-public" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
+  test = var.owner_info.communication_slack_channel
+  labels = {
+    env    = try(var.labels.env, "")
+    public = try(var.labels.public, "")
+    tribe  = try(var.labels.tribe, "")
+    active = try(var.labels.active, "yes")
+  }
+}
+
 resource "google_storage_bucket" "bucket" {
   name                        = local.final_bucket_name
-  labels                      = var.labels
+  labels                      = local.labels
   location                    = var.location
   storage_class               = var.storage_class
   uniform_bucket_level_access = true
@@ -49,12 +61,6 @@ resource "google_storage_bucket" "bucket" {
     }
   }
 
-}
-
-# insert suffix in bucket name based if label.type sandbox or public .
-locals {
-  final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.labels.public == true ? "-public" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
-  test = var.owner_info.communication_slack_channel
 }
 
 resource "google_storage_bucket_iam_binding" "storage_admin" {
