@@ -23,23 +23,19 @@ variable "owner_info" {
 }
 
 variable "labels" {
-  type = map(string)
-  default = {
-    "public" = "no"
-    "tribe" = ""
-    "env" = ""
-  }
+  # Variable structure is defined in locals
+  type = any
   validation {
-    condition     = var.labels.env == "sandbox" || var.labels.env == "production"
+    condition     = contains(["production", "sandbox"], var.labels["env"])
     error_message = "Label env is mandatory and can be: sandbox or production."
   }
   validation {
-    condition     = var.labels.public == "yes" || var.labels.public == "no"
+    condition     = contains(["yes", "no"], var.labels["public"])
     error_message = "Label public is mandatory and can be: yes or no."
   }
   validation {
-    condition     = var.labels.tribe == "ancillaries" || var.labels.tribe == "autobooking" || var.labels.tribe == "bass" || var.labels.tribe == "bi" || var.labels.tribe == "booking" || var.labels.tribe == "cs-systems" || var.labels.tribe == "data-acquisition" || var.labels.tribe == "finance" || var.labels.tribe == "platform" || var.labels.tribe == "php" || var.labels.tribe == "reservations" || var.labels.tribe == "search" || var.labels.tribe == "tequila"
-    error_message = "Label tribe is mandatory and can be (ancillaries|autobooking|bass|bi|booking|cs-systems|data-acquisition|finance|platform|php|reservations|search)."
+    condition     = contains(["ancillaries", "autobooking", "bass", "bi", "booking", "cs-systems", "data-acquisition", "finance", "platform", "php", "reservations", "search", "tequila"], var.labels["tribe"])
+    error_message = "Label tribe is mandatory and can be (ancillaries|autobooking|bass|bi|booking|cs-systems|data-acquisition|finance|platform|php|reservations|search|tequila)."
   }
 }
 
