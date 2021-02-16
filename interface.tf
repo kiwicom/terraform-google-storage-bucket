@@ -12,7 +12,7 @@ variable "bucket_name" {
 variable "owner_info" {
   type = map(string)
   default = {
-    "responsible_people" = ""
+    "responsible_people"          = ""
     "communication_slack_channel" = ""
   }
 
@@ -23,8 +23,13 @@ variable "owner_info" {
 }
 
 variable "labels" {
-  # Variable structure is defined in locals
-  type = any
+  description = "Labels that are mandatory and have to be specified in the bucket module interface"
+  type        = map(string)
+  default = {
+    "env"    = ""
+    "public" = "no"
+    "tribe"  = ""
+  }
   validation {
     condition     = contains(["production", "sandbox"], var.labels["env"])
     error_message = "Label env is mandatory and can be: sandbox or production."
@@ -77,40 +82,40 @@ variable "storage_class" {
 }
 
 variable "randomise" {
-  type        = bool
-  default     = true
+  type    = bool
+  default = true
 }
 
 variable "expiration_rule" {
   type = object({
-    delete  = bool
-    days    = number
-  }
+    delete = bool
+    days   = number
+    }
   )
   default = {
     delete = true
-    days  = 0
+    days   = 0
   }
   validation {
-    condition = var.expiration_rule.delete == false || var.expiration_rule.days > 0
+    condition     = var.expiration_rule.delete == false || var.expiration_rule.days > 0
     error_message = "Set days > 0, or if you have a valid usage case, set delete to: false ."
   }
 }
 
 variable "conversion_rule" {
-  type = list(map(string))
-  default =[]
+  type    = list(map(string))
+  default = []
 }
 
 variable "website" {
   type = object({
     main_page_suffix = string
-    not_found_page = string
+    not_found_page   = string
   })
   default = null
 }
 
 variable "versioning_enable" {
-  type = bool
+  type    = bool
   default = false
 }
