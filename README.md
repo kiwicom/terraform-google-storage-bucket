@@ -21,12 +21,6 @@ module "test_bucket" {
     env     = "sandbox" # can be sandbox of production
     public  = "no"      # yes or no
   }
-
-  expiration_rule = {   # expiration policy in days
-    delete  = true
-    days    = 365
-  }
-
 }
 ```
 
@@ -89,10 +83,10 @@ module "test_bucket" {
 ```terraform
   lifecycle_rules = [
     {
-      action {
+      action = {
         type = "Delete"
       }
-      condition {
+      condition = {
         age = 50 # in days
       }
     }
@@ -140,20 +134,33 @@ module "test_bucket2" {
   members_object_creator = [
     "serviceAccount:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com",
   ]
-
-  expiration_rule = {
-    delete  = true
-    days    = 730
-  }
-
-  conversion_rule = [
+  
+  lifecycle_rules = [
     {
-      storage_class = "NEARLINE"
-      days          = 90
+      action = {
+        type          = "SetStorageClass"
+        storage_class = "NEARLINE"
+      }
+      condition = {
+        age = 90 # in days
+      }
     },
     {
-      storage_class = "ARCHIVE"
-      days          = 365
+      action = {
+        type          = "SetStorageClass"
+        storage_class = "ARCHIVE"
+      }
+      condition = {
+        age = 180
+      }
+    },
+    {
+      action = {
+        type = "Delete"
+      }
+      condition = {
+        age = 365
+      }
     }
   ]
   
@@ -161,7 +168,6 @@ module "test_bucket2" {
     main_page_suffix = "index.html"
     not_found_page = null
   }
-
 }
 ```
 ## Release notes
@@ -170,4 +176,8 @@ module "test_bucket2" {
 Initial release
 
 ### 1.0.4
-Add support for versioning
+Add support for versioning[]
+
+### 2.0
+
+Breaking change: `expiration_rule` and `conversion_rule` were replaced by `lifecycle_rules`
