@@ -86,25 +86,13 @@ variable "randomise" {
   default = true
 }
 
-variable "expiration_rule" {
-  type = object({
-    delete = bool
-    days   = number
-    }
-  )
-  default = {
-    delete = true
-    days   = 0
-  }
-  validation {
-    condition     = var.expiration_rule.delete == false || var.expiration_rule.days > 0
-    error_message = "Set days > 0, or if you have a valid usage case, set delete to: false ."
-  }
-}
-
-variable "conversion_rule" {
-  type    = list(map(string))
-  default = []
+variable "lifecycle_rules" {
+  type = set(object({
+    action    = map(string)
+    condition = map(string)
+  }))
+  description = "https://www.terraform.io/docs/providers/google/r/storage_bucket.html#lifecycle_rule"
+  default     = []
 }
 
 variable "website" {

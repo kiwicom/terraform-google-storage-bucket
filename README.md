@@ -21,12 +21,6 @@ module "test_bucket" {
     env     = "sandbox" # can be sandbox of production
     public  = "no"      # yes or no
   }
-
-  expiration_rule = {   # expiration policy in days
-    delete  = true
-    days    = 365
-  }
-
 }
 ```
 
@@ -61,12 +55,6 @@ module "test_bucket" {
     * This info is needed so Infra staff can find Point Of Contact for the bucket.
     * Value `responsible_people` please fill with email of slack handle. Not optional, but can be empty string if there is no direct responsible person.
     * Value `communication_slack_channel` Name of primary Slack channel for communication Examples: #platform-infra
-<br /> 
-  
-* `expiration_rule` object(bool, number)
-    * This defines a object [lifecycle](https://cloud.google.com/storage/docs/lifecycle) action with `Delete` action set to value of `days`
-    * Is is strongly encouraged to define a expiration_rule for your bucket, please consider usage cases for data in your bucket and set accordingly.
-    * If your usage case requires it, it's possible to not set a expiration_rule by setting `delete = false`
 <br />
 
 * `members_object_viewer` `members_object_creator` `members_object_admin` `members_storage_admin` list(string)
@@ -86,21 +74,21 @@ module "test_bucket" {
 ```
 <br />
 
-* `conversion_rule` list(map(string))
-    * Use these to change the [storage class](https://cloud.google.com/storage/docs/storage-classes) of an object when the object meets conditions specified in the lifecycle rule.
-    * This defines a object [lifecycle](https://cloud.google.com/storage/docs/lifecycle) action with `SetStorageClass` with `Age` set to value of `days`
-    * Generally we use these downgrade storage class of objects in order to reduce costs.
+* `lifecycle_rules` set(object({ action = map(string) condition = map(string) }))
+    * Use these when you want to delete old objects or change Storage Class.
+    * We generally use these to move objects to a cost-efficient storage when data is no longer accessed on daily basis.
+    * See [Lifecycle Actions](https://cloud.google.com/storage/docs/lifecycle#actions) and [Lifecycle Conditions](https://cloud.google.com/storage/docs/lifecycle#conditions) on what can be defined here.
   
   
-```hcl-terraform
-  conversion_rule = [
+```terraform
+  lifecycle_rules = [
     {
-      storage_class = "NEARLINE"
-      days          = 90
-    },
-    {
-      storage_class = "ARCHIVE"
-      days          = 365
+      action = {
+        type = "Delete"
+      }
+      condition = {
+        age = 50 # in days
+      }
     }
   ]
 ```
@@ -146,20 +134,33 @@ module "test_bucket2" {
   members_object_creator = [
     "serviceAccount:something@platform-sandbox-6b6f7700.iam.gserviceaccount.com",
   ]
-
-  expiration_rule = {
-    delete  = true
-    days    = 730
-  }
-
-  conversion_rule = [
+  
+  lifecycle_rules = [
     {
-      storage_class = "NEARLINE"
-      days          = 90
+      action = {
+        type          = "SetStorageClass"
+        storage_class = "NEARLINE"
+      }
+      condition = {
+        age = 90 # in days
+      }
     },
     {
-      storage_class = "ARCHIVE"
-      days          = 365
+      action = {
+        type          = "SetStorageClass"
+        storage_class = "ARCHIVE"
+      }
+      condition = {
+        age = 180
+      }
+    },
+    {
+      action = {
+        type = "Delete"
+      }
+      condition = {
+        age = 365
+      }
     }
   ]
   
@@ -167,7 +168,6 @@ module "test_bucket2" {
     main_page_suffix = "index.html"
     not_found_page = null
   }
-
 }
 ```
 ## Release notes
@@ -176,4 +176,8 @@ module "test_bucket2" {
 Initial release
 
 ### 1.0.4
-Add support for versioning
+Add support for versioning[]
+
+### 2.0
+
+Breaking change: `expiration_rule` and `conversion_rule` were replaced by `lifecycle_rules`
