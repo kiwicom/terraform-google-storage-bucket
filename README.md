@@ -1,12 +1,11 @@
 # bucket-module
 
-
 ## Usage
 Here is a example of what is needed to create a bucket 
 ```hcl-terraform
 module "test_bucket" {
   source = "kiwicom/storage-bucket/google"
-  version = "~> 1.0.0" # version >= 1.0.0 and < 1.1.0, e.g. 1.0.X
+  version = "~> 2.0.0" # version >= 2.0.0 and < 2.1.0, e.g. 2.0.X
 
   bucket_name   = "test-bucket"     #base name, random suffix will be added and depending on labels other suffixes
   location      = var.GOOGLE_REGION #this will set location of bucket to project location
@@ -107,7 +106,7 @@ module "test_bucket" {
 ```hcl-terraform
 module "test_bucket2" {
   source = "kiwicom/storage-bucket/google"
-  version = "~> 1.0.0" # version >= 1.0.0 and < 1.1.0, e.g. 1.0.X
+  version = "~> 2.0.0" # version >= 2.0.0 and < 2.1.0, e.g. 2.0.X
 
   bucket_name       = "test-bucket2"     
   location          = "europe-west1"
