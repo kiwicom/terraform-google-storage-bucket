@@ -56,7 +56,7 @@ module "test_bucket" {
     * Value `communication_slack_channel` Name of primary Slack channel for communication Examples: #platform-infra
 <br />
 
-* `members_object_viewer` `members_object_creator` `members_object_admin` `members_storage_admin` list(string)
+* `members_object_viewer` `members_legacy_object_reader` `members_object_creator` `members_object_admin` `members_storage_admin` list(string)
     * Through these you control access to bucket.
     * These set the [IAM binding](https://www.terraform.io/docs/providers/google/r/storage_bucket_iam.html#google_storage_bucket_iam_binding) to the bucket for the [predefined IAM role](https://cloud.google.com/storage/docs/access-control/iam-roles) for GCS.
     * GCP applications should use [service accounts](https://kiwi.wiki/handbook/tooling/gcp/service-accounts/) to access GCS buckets.

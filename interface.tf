@@ -66,6 +66,13 @@ variable "members_object_viewer" {
   description = "List of members that will receive roles/storage.objectViewer to bucket"
 }
 
+variable "members_legacy_object_reader" {
+  type        = list(string)
+  default     = []
+  description = "List of members that will receive roles/storage.legacyObjectReader to bucket"
+}
+
+
 variable "members_object_admin" {
   type        = list(string)
   default     = []
