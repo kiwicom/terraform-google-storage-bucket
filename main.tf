@@ -93,6 +93,19 @@ resource "google_storage_bucket_iam_binding" "object_viewer" {
   ]
   count = length(var.members_object_viewer) == 0 ? 0 : 1
 }
+
+resource "google_storage_bucket_iam_binding" "legacy_object_reader" {
+  bucket  = google_storage_bucket.bucket.name
+  role    = "roles/storage.legacyObjectReader"
+  members = var.members_legacy_object_reader
+  depends_on = [
+    google_storage_bucket.bucket,
+  ]
+  count = length(var.members_legacy_object_reader) == 0 ? 0 : 1
+}
+
+
+
 # Create to make bucket publicly readable, but not list-able
 resource "google_storage_bucket_iam_member" "public_view" {
   bucket = google_storage_bucket.bucket.name
