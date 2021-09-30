@@ -185,4 +185,4 @@ Breaking change: `expiration_rule` and `conversion_rule` were replaced by `lifec
 Add legacyObjectReader
 
 ### 2.0.2
-Fix public bucket naming bug
+Removed the public suffix naming as it wasn't working, and naming change would be a breaking change (rename=recreate).
