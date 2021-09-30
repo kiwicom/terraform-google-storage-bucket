@@ -180,3 +180,9 @@ Add support for versioning[]
 ### 2.0
 
 Breaking change: `expiration_rule` and `conversion_rule` were replaced by `lifecycle_rules`
+
+### 2.0.1
+Add legacyObjectReader
+
+### 2.0.2
+Fix public bucket naming bug
