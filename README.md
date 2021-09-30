@@ -44,7 +44,7 @@ module "test_bucket" {
 
 * `labels` map(string)
     * Labels `public` , `tribe` and `env` are mandatory. Naming of bucket and creation of IAM rules are dependent on these.
-    * Label `public` determines if bucket content should be publicly available. If set to `"yes"` a suffix `-public` will be added to bucket name. IAM rule granting `AllUsers` the role `roles/storage.legacyObjectReader`, enabling public access to objects in the bucket but preventing public listing of bucket content. Default is `"no"`
+    * Label `public` determines if bucket content should be publicly available. IAM rule granting `AllUsers` the role `roles/storage.legacyObjectReader`, enabling public access to objects in the bucket but preventing public listing of bucket content. Default is `"no"`
     * Label `env` can be set to `sandbox` or `production`. If set to `sandbox` suffix will be added to name.
     * Label `tribe` can be set to (`ancillaries`|`autobooking`|`bass`|`bi`|`booking`|`cs-systems`|`data-acquisition`|`finance`|`php`|`platform`|`reservations`|`search`|`tequila`)
     * You may add additional labels in form `arbitrary = "label"` but you must follow these [rules](https://cloud.google.com/storage/docs/key-terms#bucket-labels) or the bucket creation will fail on Terraform apply!
@@ -180,3 +180,9 @@ Add support for versioning[]
 ### 2.0
 
 Breaking change: `expiration_rule` and `conversion_rule` were replaced by `lifecycle_rules`
+
+### 2.0.1
+Add legacyObjectReader
+
+### 2.0.2
+Removed the public suffix naming as it wasn't working, and naming change would be a breaking change (rename=recreate).

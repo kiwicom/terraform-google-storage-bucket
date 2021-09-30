@@ -1,6 +1,6 @@
 # insert suffix in bucket name based if label.type sandbox or public .
 locals {
-  final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.labels.public == true ? "-public" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
+  final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
   test              = var.owner_info.communication_slack_channel
 
   # Additional labels that are nice to have and are not forced in the bucket module interface
