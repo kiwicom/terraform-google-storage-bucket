@@ -8,7 +8,7 @@ locals {
   # Additional labels that are nice to have and are not forced in the bucket module interface
   additional_labels = {
     active = try(var.labels.active, "yes")
-    bill_project = data.google_project.current.number
+    bill_project = data.google_project.current
     bill_path = ""
   }
 }
