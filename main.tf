@@ -7,6 +7,7 @@ locals {
   additional_labels = {
     active = try(var.labels.active, "yes")
     bill_project = var.GOOGLE_PROJECT
+    bill_path = ""
   }
 }
 
