@@ -6,6 +6,7 @@ locals {
   # Additional labels that are nice to have and are not forced in the bucket module interface
   additional_labels = {
     active = try(var.labels.active, "yes")
+    bill_project = var.GOOGLE_PROJECT
   }
 }
 

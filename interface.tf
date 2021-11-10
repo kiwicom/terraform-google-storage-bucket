@@ -114,3 +114,7 @@ variable "versioning_enable" {
   type    = bool
   default = false
 }
+
+variable "GOOGLE_PROJECT" {
+  description = "Google Cloud Platform project id"
+}
