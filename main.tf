@@ -1,7 +1,7 @@
 # insert suffix in bucket name based if label.type sandbox or public .
 data "google_project" "current" {}
 
-#data "CI_PROJECT_ROOT_NAMESPACE" "current" {}
+data "kubernetes_namespace" "current" {}
 
 locals {
   final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
@@ -10,9 +10,8 @@ locals {
   # Additional labels that are nice to have and are not forced in the bucket module interface
   additional_labels = {
     active = try(var.labels.active, "yes")
-    bill_project = data.google_project.current.labels
-    #bill_path = data.CI_PROJECT_ROOT_NAMESPACE.current
-  }
+    bill_project = data.google_project.current.project_id
+    bill_path = data.kubernetes_namespace.current.metadata.name
 }
 
 resource "google_storage_bucket" "bucket" {
