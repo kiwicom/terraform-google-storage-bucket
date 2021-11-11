@@ -13,7 +13,7 @@ locals {
   additional_labels = {
     active       = try(var.labels.active, "yes")
     bill_project = data.google_project.current.project_id
-    bill_path    = data.kubernetes_namespace.current.metadata.name
+    bill_path    = data.kubernetes_namespace.current.metadata[0].name
   }
 }
 
