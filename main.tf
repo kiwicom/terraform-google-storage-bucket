@@ -1,7 +1,7 @@
 # insert suffix in bucket name based if label.type sandbox or public .
 data "google_project" "current" {}
 
-data "CI_PROJECT_ROOT_NAMESPACE" "current" {}
+#data "CI_PROJECT_ROOT_NAMESPACE" "current" {}
 
 locals {
   final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
