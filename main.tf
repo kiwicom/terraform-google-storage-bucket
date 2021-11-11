@@ -11,7 +11,7 @@ locals {
   additional_labels = {
     active = try(var.labels.active, "yes")
     bill_project = data.google_project.current.labels
-    bill_path = data.CI_PROJECT_ROOT_NAMESPACE.current
+    #bill_path = data.CI_PROJECT_ROOT_NAMESPACE.current
   }
 }
 
