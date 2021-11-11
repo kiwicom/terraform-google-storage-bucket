@@ -9,7 +9,7 @@ locals {
   additional_labels = {
     active       = try(var.labels.active, "yes")
     bill_project = data.google_project.current.project_id
-    bill_path    = ""
+    bill_path    = try(var.labels.service, "")
   }
 }
 
