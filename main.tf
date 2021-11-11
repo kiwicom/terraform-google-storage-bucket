@@ -1,6 +1,8 @@
 # insert suffix in bucket name based if label.type sandbox or public .
 data "google_project" "current" {}
 
+data "CI_PROJECT_ROOT_NAMESPACE" "current" {}
+
 locals {
   final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
   test              = var.owner_info.communication_slack_channel
@@ -8,8 +10,8 @@ locals {
   # Additional labels that are nice to have and are not forced in the bucket module interface
   additional_labels = {
     active = try(var.labels.active, "yes")
-    bill_project = data.google_project.current.project_id
-    bill_path = ""
+    bill_project = data.google_project.current.labels
+    bill_path = data.CI_PROJECT_ROOT_NAMESPACE.current
   }
 }
 
