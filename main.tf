@@ -1,10 +1,6 @@
-# insert suffix in bucket name based if label.type sandbox or public .
 data "google_project" "current" {}
 
-data "kubernetes_namespace" "current" {
-  metadata {}
-}
-
+# insert suffix in bucket name based if label.type sandbox or public .
 locals {
   final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
   test              = var.owner_info.communication_slack_channel
@@ -13,7 +9,7 @@ locals {
   additional_labels = {
     active       = try(var.labels.active, "yes")
     bill_project = data.google_project.current.project_id
-    bill_path    = tostring(data.kubernetes_namespace.current.metadata[0].name)
+    bill_path    = ""
   }
 }
 
