@@ -16,9 +16,10 @@ module "test_bucket" {
   }
 
   labels = {
-    tribe   = "platform" 
-    env     = "sandbox" # can be sandbox of production
-    public  = "no"      # yes or no
+    tribe     = "platform" 
+    env       = "sandbox" # can be sandbox of production
+    public    = "no"      # yes or no
+    bill_path = "namespace__service" # this is used for billing attribution
   }
 }
 ```
@@ -47,6 +48,9 @@ module "test_bucket" {
     * Label `public` determines if bucket content should be publicly available. IAM rule granting `AllUsers` the role `roles/storage.legacyObjectReader`, enabling public access to objects in the bucket but preventing public listing of bucket content. Default is `"no"`
     * Label `env` can be set to `sandbox` or `production`. If set to `sandbox` suffix will be added to name.
     * Label `tribe` can be set to (`ancillaries`|`autobooking`|`bass`|`bi`|`booking`|`cs-systems`|`data-acquisition`|`finance`|`php`|`platform`|`reservations`|`search`|`tequila`)
+    * Label `active` can be `yes` and `no`. Bucket are not deleted, so use this to signal the bucket is not used.
+    * Label `bill_path` is used to attribute the costs of the bucket to the service. Please use `__` to separate`namespace` and `service`
+    * Label `bill_project` is used to attribute the costs of the bucket to the project, this will be automatically filed with bucket project, if you need to override use this.
     * You may add additional labels in form `arbitrary = "label"` but you must follow these [rules](https://cloud.google.com/storage/docs/key-terms#bucket-labels) or the bucket creation will fail on Terraform apply!
 <br /> 
 
@@ -120,10 +124,13 @@ module "test_bucket2" {
   }
 
   labels = {
-    tribe     = "platform" 
-    env       = "sandbox" 
-    public    = "no"      
-    arbitrary = "label"
+    tribe         = "platform" 
+    env           = "sandbox" 
+    public        = "no"      
+    arbitrary     = "label"
+    active        = "yes"
+    bill_path     = "namespace__service"
+    bill_project  = "platform-sandbox-6b6f7700" 
   }
 
   members_object_viewer = [
@@ -186,3 +193,6 @@ Add legacyObjectReader
 
 ### 2.0.2
 Removed the public suffix naming as it wasn't working, and naming change would be a breaking change (rename=recreate).
+
+### 2.0.3
+Add bill_path, bill_project to support billing attribution.
