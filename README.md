@@ -19,7 +19,7 @@ module "test_bucket" {
     tribe     = "platform" 
     env       = "sandbox" # can be sandbox of production
     public    = "no"      # yes or no
-    bill_path = "namespace__service" # this is used for billing attribution
+    bill_path = "namespace__deployment" # this is used for billing attribution
   }
 }
 ```
