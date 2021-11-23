@@ -1,3 +1,5 @@
+data "google_project" "current" {}
+
 # insert suffix in bucket name based if label.type sandbox or public .
 locals {
   final_bucket_name = "${var.bucket_name}${var.labels.env == "sandbox" ? "-sandbox" : ""}${var.randomise == true ? "-${random_id.id[0].hex}" : ""}"
@@ -5,7 +7,9 @@ locals {
 
   # Additional labels that are nice to have and are not forced in the bucket module interface
   additional_labels = {
-    active = try(var.labels.active, "yes")
+    active       = try(var.labels.active, "yes")
+    bill_project = data.google_project.current.project_id
+    bill_path    = lower(try(var.labels.bill_path, try(var.labels.service, try(var.labels.goog-dm, ""))))
   }
 }
 
