@@ -28,6 +28,8 @@ resource "google_storage_bucket" "bucket" {
     }
   }
 
+  force_destroy = false
+
   lifecycle {
     prevent_destroy = true
   }
